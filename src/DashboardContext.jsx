@@ -1,7 +1,13 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import { useContext } from "react";
+export const DashboardContext = React.createContext();
+export function useDashboardContext() {
+  return useContext(DashboardContext);
+}
+import React, { createContext, useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDCmvA9sFCSc5r4ZuFUJuGdO1LDoW7rKao",
@@ -18,11 +24,6 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-
-export const DashboardContext = React.createContext();
-export function useDashboardContext() {
-  return useContext(DashboardContext);
-}
 
 export function DashboardProvider({ children }) {
   // Shared state for all dashboard features

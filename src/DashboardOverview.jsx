@@ -21,11 +21,11 @@ function DashboardOverview({ materialsCount, pyqsCount, seminarsCount, creditsCo
       </div>
       <div className="overview-card">
         <div className="overview-number">{streakCount}</div>
-        <div className="overview-label">Streak</div>
+        <div className="overview-label">Study Streak</div>
       </div>
       <div className="overview-card">
         <div className="overview-number">{hoursCount}</div>
-        <div className="overview-label">Hours</div>
+        <div className="overview-label">Study Hours</div>
       </div>
     </div>
   );

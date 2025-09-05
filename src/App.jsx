@@ -14,14 +14,14 @@ import Planner from "./Planner.jsx";
 import TaskManager from "./TaskManager.jsx";
 import Analytics from "./Analytics.jsx";
 import Goals from "./Goals.jsx";
-import SocialLearning from "./SocialLearning";
-import QuizMaker from "./QuizMaker";
-import MindMap from "./MindMap";
-import CollaborativeNotes from "./CollaborativeNotes";
-import StudyRooms from "./StudyRooms";
-import Badges from "./Badges";
-import ResumeBuilder from "./ResumeBuilder";
-import AIAssistant from "./AIAssistant";
+import SocialLearning from "./SocialLearning.jsx";
+import QuizMaker from "./QuizMaker.jsx";
+import MindMap from "./MindMap.jsx";
+import CollaborativeNotes from "./CollaborativeNotes.jsx";
+import StudyRooms from "./StudyRooms.jsx";
+import Badges from "./Badges.jsx";
+import ResumeBuilder from "./ResumeBuilder.jsx";
+import AIAssistant from "./AIAssistant.jsx";
 
 library.add(fas);
 
