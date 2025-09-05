@@ -1,3 +1,29 @@
+// ErrorBoundary for global fallback
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    // Log error to console or service
+    console.error('ErrorBoundary caught:', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{color:'#FFD700',background:'#181818',padding:'2rem',textAlign:'center'}}>
+          <h1>Something went wrong.</h1>
+          <pre style={{color:'#fff'}}>{this.state.error?.toString()}</pre>
+          <p>If you see this on Vercel, please check your Firebase config and context provider.</p>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 import React, { useState, useEffect, useContext, useRef } from "react";
 import "./App.css";
@@ -174,16 +200,32 @@ function AppContent() {
 }
 
 
+
 function App() {
   return (
-    <DashboardProvider>
-      <AppWithContext />
-    </DashboardProvider>
+    <ErrorBoundary>
+      <DashboardProvider>
+        <AppWithContext />
+      </DashboardProvider>
+    </ErrorBoundary>
   );
 }
 
 function AppWithContext() {
-  const { user } = useDashboardContext();
+  let user, ctx;
+  try {
+    ctx = useDashboardContext();
+    user = ctx.user;
+  } catch (e) {
+    console.error('DashboardContext error:', e);
+    return (
+      <div style={{color:'#FFD700',background:'#181818',padding:'2rem',textAlign:'center'}}>
+        <h1>Dashboard Context Error</h1>
+        <pre style={{color:'#fff'}}>{e.toString()}</pre>
+        <p>This means the context provider is missing or broken. Please check your deployment.</p>
+      </div>
+    );
+  }
   if (!user) {
     return <LoginPage />;
   }
