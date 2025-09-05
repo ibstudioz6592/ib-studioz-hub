@@ -1,12 +1,16 @@
 import React from "react";
 
+
 function Badges() {
   return (
-    <div className="feature-panel" id="badges-panel">
-      <div className="section-header">
-        <h2 className="section-title"><i className="fas fa-medal"></i> Achievement Badges</h2>
+    <div className="ib-dashboard">
+      <div className="ib-card">
+        <div className="ib-card-icon"><i className="fas fa-medal"></i></div>
+        <div className="ib-card-title">Achievement Badges</div>
+        <div className="ib-card-content">
+          {/* ...rest of your Badges component... */}
+        </div>
       </div>
-      {/* ...rest of your Badges component... */}
     </div>
   );
 }

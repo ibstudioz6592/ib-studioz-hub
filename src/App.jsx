@@ -59,6 +59,20 @@ function AppContent() {
   useEffect(() => {
     // Example: Load materials count from Firestore
     db.collection("notes").onSnapshot(snapshot => {
+  function IBHeader() {
+    return (
+      <header className="ib-header ib-fade-in">
+        <div className="ib-logo">IB STUDIOZ</div>
+        <nav className="ib-nav">
+          <a href="#dashboard">Dashboard</a>
+          <a href="#planner">Planner</a>
+          <a href="#tasks">Tasks</a>
+          <a href="#analytics">Analytics</a>
+          <a href="#login">Login</a>
+        </nav>
+      </header>
+    );
+  }
       setMaterialsCount(snapshot.size);
     });
     db.collection("pyqs").onSnapshot(snapshot => {
@@ -167,7 +181,8 @@ function App() {
   }
   return (
     <DashboardProvider>
-      <AppContent />
+    <IBHeader />
+    <AppContent />
     </DashboardProvider>
   );
 }

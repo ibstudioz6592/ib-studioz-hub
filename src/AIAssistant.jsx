@@ -1,13 +1,17 @@
 import React from "react";
 
+
 function AIAssistant() {
   // ...existing logic...
   return (
-    <div className="feature-panel" id="ai-assistant-panel">
-      <div className="section-header">
-        <h2 className="section-title"><i className="fas fa-robot"></i> AI Learning Assistant</h2>
+    <div className="ib-dashboard">
+      <div className="ib-card">
+        <div className="ib-card-icon"><i className="fas fa-robot"></i></div>
+        <div className="ib-card-title">AI Learning Assistant</div>
+        <div className="ib-card-content">
+          {/* ...rest of your AIAssistant component... */}
+        </div>
       </div>
-      {/* ...rest of your AIAssistant component... */}
     </div>
   );
 }

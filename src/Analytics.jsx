@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function Analytics() {
-	// Example progress data
 	const [progress, setProgress] = useState({
 		mathematics: 85,
 		physics: 72,
@@ -9,28 +8,25 @@ function Analytics() {
 		computerScience: 78
 	});
 	return (
-		<div className="feature-panel" id="analytics-panel">
-			<div className="section-header">
-				<h2 className="section-title"><i className="fas fa-chart-line"></i> Progress Analytics</h2>
-				<div className="btn-secondary">
-					<i className="fas fa-download"></i> Export Report
-				</div>
-			</div>
-			<div className="analytics-container">
-				<div className="analytics-chart">
-					<div className="chart-title">Study Progress</div>
+		<div className="ib-dashboard">
+			<div className="ib-card">
+				<div className="ib-card-icon"><i className="fas fa-chart-line"></i></div>
+				<div className="ib-card-title">Progress Analytics</div>
+				<div className="ib-card-content">
+					<div className="chart-title" style={{color:'#FFD700',fontWeight:700,marginBottom:'1rem'}}>Study Progress</div>
 					{Object.entries(progress).map(([subject, value]) => (
 						<div key={subject} style={{ marginBottom: 20 }}>
-							<div className="progress-label">
+							<div className="progress-label" style={{display:'flex',justifyContent:'space-between'}}>
 								<span className="progress-text">{subject.charAt(0).toUpperCase() + subject.slice(1)}</span>
 								<span className="progress-value">{value}%</span>
 							</div>
-							<div className="progress-bar">
-								<div className="progress-fill" style={{ width: `${value}%` }}></div>
+							<div className="progress-bar" style={{background:'#222',borderRadius:8,overflow:'hidden',height:12}}>
+								<div className="progress-fill" style={{ width: `${value}%`, background:'#FFD700', height:12, borderRadius:8, transition:'width 0.5s'}}></div>
 							</div>
 						</div>
 					))}
 				</div>
+				<button className="ib-btn" style={{marginTop:'1rem'}}><i className="fas fa-download"></i> Export Report</button>
 			</div>
 		</div>
 	);

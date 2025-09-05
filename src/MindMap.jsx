@@ -1,12 +1,16 @@
 import React from "react";
 
+
 function MindMap() {
   return (
-    <div className="feature-panel" id="mindmap-panel">
-      <div className="section-header">
-        <h2 className="section-title"><i className="fas fa-project-diagram"></i> Mind Map</h2>
+    <div className="ib-dashboard">
+      <div className="ib-card">
+        <div className="ib-card-icon"><i className="fas fa-project-diagram"></i></div>
+        <div className="ib-card-title">Mind Map</div>
+        <div className="ib-card-content">
+          {/* ...rest of your MindMap component... */}
+        </div>
       </div>
-      {/* ...rest of your MindMap component... */}
     </div>
   );
 }

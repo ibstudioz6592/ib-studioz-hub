@@ -1,12 +1,16 @@
 import React from "react";
 
+
 function CollaborativeNotes() {
   return (
-    <div className="feature-panel" id="collab-notes-panel">
-      <div className="section-header">
-        <h2 className="section-title"><i className="fas fa-edit"></i> Collaborative Notes</h2>
+    <div className="ib-dashboard">
+      <div className="ib-card">
+        <div className="ib-card-icon"><i className="fas fa-edit"></i></div>
+        <div className="ib-card-title">Collaborative Notes</div>
+        <div className="ib-card-content">
+          {/* ...rest of your CollaborativeNotes component... */}
+        </div>
       </div>
-      {/* ...rest of your CollaborativeNotes component... */}
     </div>
   );
 }
