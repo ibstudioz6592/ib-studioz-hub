@@ -1,0 +1,23 @@
+/* Paste your CSS from the HTML file here. This will be used globally in your React app. */
+
+:root {
+    --primary-glow: #FFD700;
+    --secondary-glow: #00A2FF;
+    --accent-glow: #FF6B6B;
+    --dark-bg: #0A0A0A;
+    --text-primary: #F0F0F0;
+    --text-secondary: #A0A0A0;
+    --text-muted: #666;
+    --card-bg: rgba(22, 22, 22, 0.8);
+    --border-color: rgba(255, 215, 0, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --danger: #e74c3c;
+    --success: #2ecc71;
+    --info: #3498db;
+    --details: #9b59b6;
+    --warning: #f39c12;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+/* ...existing CSS from your HTML file... */
+/* For brevity, only the root variables are shown. Paste the rest of your CSS here. */
