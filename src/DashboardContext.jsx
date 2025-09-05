@@ -1,9 +1,16 @@
-import { useContext } from "react";
-export const DashboardContext = React.createContext();
+import React, { createContext, useState, useEffect, useContext } from "react";
+
+// Create context once
+const DashboardContext = createContext();
+
+// Robust hook: throws if used outside provider
 export function useDashboardContext() {
-  return useContext(DashboardContext);
+  const ctx = useContext(DashboardContext);
+  if (!ctx) {
+    throw new Error("useDashboardContext must be used within a DashboardProvider");
+  }
+  return ctx;
 }
-import React, { createContext, useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";

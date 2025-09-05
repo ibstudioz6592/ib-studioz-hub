@@ -173,17 +173,25 @@ function AppContent() {
   );
 }
 
+
 function App() {
+  return (
+    <DashboardProvider>
+      <AppWithContext />
+    </DashboardProvider>
+  );
+}
+
+function AppWithContext() {
   const { user } = useDashboardContext();
-  // If not authenticated, show login page
   if (!user) {
     return <LoginPage />;
   }
   return (
-    <DashboardProvider>
-    <IBHeader />
-    <AppContent />
-    </DashboardProvider>
+    <>
+      <IBHeader />
+      <AppContent />
+    </>
   );
 }
 
