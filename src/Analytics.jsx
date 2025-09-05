@@ -1,35 +1,55 @@
-import React, { useState } from "react";
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'; // Example using a library
+
+const progressData = [
+  { subject: 'Math', value: 85 },
+  { subject: 'Physics', value: 72 },
+  { subject: 'Chemistry', value: 91 },
+  { subject: 'CS', value: 78 },
+];
+
+const ProgressTracker = ({ subject, value }) => {
+  const accentColors = {
+    Math: '#007aff',
+    Physics: '#ff9500',
+    Chemistry: '#34c759',
+    CS: '#af52de',
+  };
+
+  return (
+    <div style={{ marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
+        <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{subject}</span>
+        <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-secondary)' }}>{value}% Complete</span>
+      </div>
+      <div style={{ background: 'var(--fill-primary)', borderRadius: 'var(--border-radius-sm)', height: '8px' }}>
+        <div style={{
+          width: `${value}%`,
+          height: '100%',
+          background: `linear-gradient(90deg, ${accentColors[subject] || 'var(--accent-primary)'} 0%, rgba(255,255,255,0.3) 100%)`,
+          borderRadius: 'var(--border-radius-sm)',
+          transition: 'width var(--transition-slow)'
+        }}></div>
+      </div>
+    </div>
+  );
+};
+
 
 function Analytics() {
-	const [progress, setProgress] = useState({
-		mathematics: 85,
-		physics: 72,
-		chemistry: 91,
-		computerScience: 78
-	});
-	return (
-		<div className="ib-dashboard">
-			<div className="ib-card">
-				<div className="ib-card-icon"><i className="fas fa-chart-line"></i></div>
-				<div className="ib-card-title">Progress Analytics</div>
-				<div className="ib-card-content">
-					<div className="chart-title" style={{color:'#FFD700',fontWeight:700,marginBottom:'1rem'}}>Study Progress</div>
-					{Object.entries(progress).map(([subject, value]) => (
-						<div key={subject} style={{ marginBottom: 20 }}>
-							<div className="progress-label" style={{display:'flex',justifyContent:'space-between'}}>
-								<span className="progress-text">{subject.charAt(0).toUpperCase() + subject.slice(1)}</span>
-								<span className="progress-value">{value}%</span>
-							</div>
-							<div className="progress-bar" style={{background:'#222',borderRadius:8,overflow:'hidden',height:12}}>
-								<div className="progress-fill" style={{ width: `${value}%`, background:'#FFD700', height:12, borderRadius:8, transition:'width 0.5s'}}></div>
-							</div>
-						</div>
-					))}
-				</div>
-				<button className="ib-btn" style={{marginTop:'1rem'}}><i className="fas fa-download"></i> Export Report</button>
-			</div>
-		</div>
-	);
+  return (
+    <div className="ib-card">
+      <h2 style={{ fontSize: 'var(--font-size-xl)', marginBottom: '24px' }}>Progress Analytics</h2>
+      <div>
+        {progressData.map(item => (
+          <ProgressTracker key={item.subject} subject={item.subject} value={item.value} />
+        ))}
+      </div>
+      <button className="ib-button ib-button-secondary" style={{ width: '100%', marginTop: '20px' }}>
+        View Detailed Report
+      </button>
+    </div>
+  );
 }
 
 export default Analytics;
