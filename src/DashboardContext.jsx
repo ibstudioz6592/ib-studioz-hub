@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
 // Create context once
-const DashboardContext = createContext();
+export const DashboardContext = createContext();
 
 // Robust hook: throws if used outside provider
 export function useDashboardContext() {

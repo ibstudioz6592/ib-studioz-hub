@@ -26,6 +26,7 @@ class ErrorBoundary extends React.Component {
 }
 
 import React, { useState, useEffect, useContext, useRef } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -35,6 +36,8 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import LoginPage from './LoginPage.jsx';
 import DashboardOverview from "./DashboardOverview.jsx";
+import StudentDashboard from "./StudentDashboard.jsx";
+import AdminDashboard from "./AdminDashboard.jsx";
 import { DashboardProvider, DashboardContext, useDashboardContext } from "./DashboardContext.jsx";
 import Planner from "./Planner.jsx";
 import TaskManager from "./TaskManager.jsx";
@@ -201,15 +204,19 @@ function AppContent() {
 
 
 
+
 function App() {
   return (
     <ErrorBoundary>
       <DashboardProvider>
-        <AppWithContext />
+        <Router>
+          <AppWithContext />
+        </Router>
       </DashboardProvider>
     </ErrorBoundary>
   );
 }
+
 
 function AppWithContext() {
   let user, ctx;
@@ -226,15 +233,50 @@ function AppWithContext() {
       </div>
     );
   }
-  if (!user) {
-    return <LoginPage />;
+
+  // Role-based routing logic
+  function RoleRouter() {
+    const [role, setRole] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+      ctx.db.collection("users").doc(user.uid).get().then(doc => {
+        const data = doc.data();
+        setRole(data?.role || "student");
+        setLoading(false);
+      }).catch(() => {
+        setRole("student");
+        setLoading(false);
+      });
+    }, [user]);
+
+    if (loading) return <div style={{color:'#FFD700',background:'#181818',padding:'2rem',textAlign:'center'}}>Loading...</div>;
+
+    return (
+      <Routes>
+        <Route path="/" element={role === "admin" ? <Navigate to="/admin" /> : <Navigate to="/student" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    );
   }
-  return (
-    <>
-      <IBHeader />
-      <AppContent />
-    </>
-  );
+
+  if (!user) {
+    return (
+      <Routes>
+        <Route path="/*" element={<LoginPage />} />
+      </Routes>
+    );
+  }
+
+  return <RoleRouter />;
 }
 
 export default App;
