@@ -1,282 +1,32 @@
-// ErrorBoundary for global fallback
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-  componentDidCatch(error, errorInfo) {
-    // Log error to console or service
-    console.error('ErrorBoundary caught:', error, errorInfo);
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{color:'#FFD700',background:'#181818',padding:'2rem',textAlign:'center'}}>
-          <h1>Something went wrong.</h1>
-          <pre style={{color:'#fff'}}>{this.state.error?.toString()}</pre>
-          <p>If you see this on Vercel, please check your Firebase config and context provider.</p>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+import React from 'react';
+import './App.css'; // Your new design system
+import StudentDashboard from './StudentDashboard'; // Assuming this is the main view
 
-import React, { useState, useEffect, useContext, useRef } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import "./App.css";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-import LoginPage from './LoginPage.jsx';
-import DashboardOverview from "./DashboardOverview.jsx";
-import StudentDashboard from "./StudentDashboard.jsx";
-import AdminDashboard from "./AdminDashboard.jsx";
-import { DashboardProvider, DashboardContext, useDashboardContext } from "./DashboardContext.jsx";
-import Planner from "./Planner.jsx";
-import TaskManager from "./TaskManager.jsx";
-import Analytics from "./Analytics.jsx";
-import Goals from "./Goals.jsx";
-import SocialLearning from "./SocialLearning.jsx";
-import QuizMaker from "./QuizMaker.jsx";
-import MindMap from "./MindMap.jsx";
-import CollaborativeNotes from "./CollaborativeNotes.jsx";
-import StudyRooms from "./StudyRooms.jsx";
-import Badges from "./Badges.jsx";
-import ResumeBuilder from "./ResumeBuilder.jsx";
-import AIAssistant from "./AIAssistant.jsx";
-
-library.add(fas);
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDCmvA9sFCSc5r4ZuFUJuGdO1LDoW7rKao",
-  authDomain: "student-portal-free.firebaseapp.com",
-  projectId: "student-portal-free",
-  storageBucket: "student-portal-free.appspot.com",
-  messagingSenderId: "272865877510",
-  appId: "1:272865877510:web:0875a2502ae55bbf9ead87"
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-function Toast({ message, type, show }) {
+function Sidebar() {
   return (
-    <div className={`toast${show ? ' show' : ''} ${type || 'success'}`}>{message}</div>
+    <nav className="sidebar">
+      <h1 style={{ fontSize: 'var(--font-size-lg)', marginBottom: '40px' }}>IB Studioz Hub</h1>
+      {/* Add NavLinks here for routing */}
+      <ul>
+        <li style={{ color: 'var(--text-secondary)', listStyle: 'none', padding: '10px 0' }}>Dashboard</li>
+        <li style={{ color: 'var(--text-secondary)', listStyle: 'none', padding: '10px 0' }}>Tasks</li>
+        <li style={{ color: 'var(--text-secondary)', listStyle: 'none', padding: '10px 0' }}>Analytics</li>
+        <li style={{ color: 'var(--text-secondary)', listStyle: 'none', padding: '10px 0' }}>Study Rooms</li>
+      </ul>
+    </nav>
   );
 }
-
-function AppContent() {
-  // Example state for dashboard counters
-  const [materialsCount, setMaterialsCount] = useState("...");
-  const [pyqsCount, setPyqsCount] = useState("...");
-  const [seminarsCount, setSeminarsCount] = useState("...");
-  const [creditsCount, setCreditsCount] = useState("...");
-  const [streakCount, setStreakCount] = useState("...");
-  const [hoursCount, setHoursCount] = useState("...");
-
-  useEffect(() => {
-    // Example: Load materials count from Firestore
-    db.collection("notes").onSnapshot(snapshot => {
-  function IBHeader() {
-    return (
-      <header className="ib-header ib-fade-in">
-        <div className="ib-logo">IB STUDIOZ</div>
-        <nav className="ib-nav">
-          <a href="#dashboard">Dashboard</a>
-          <a href="#planner">Planner</a>
-          <a href="#tasks">Tasks</a>
-          <a href="#analytics">Analytics</a>
-          <a href="#login">Login</a>
-        </nav>
-      </header>
-    );
-  }
-      setMaterialsCount(snapshot.size);
-    });
-    db.collection("pyqs").onSnapshot(snapshot => {
-      setPyqsCount(snapshot.size);
-    });
-    db.collection("seminars").onSnapshot(snapshot => {
-      setSeminarsCount(snapshot.size);
-    });
-    // ...other Firestore listeners for credits, streak, hours
-  }, []);
-
-  const { activePanel, setActivePanel } = useContext(DashboardContext);
-  const [toast, setToast] = useState({ message: "", type: "success", show: false });
-  const toastTimeout = useRef();
-
-  function showToast(message, type = "success") {
-    setToast({ message, type, show: true });
-    clearTimeout(toastTimeout.current);
-    toastTimeout.current = setTimeout(() => setToast(t => ({ ...t, show: false })), 3500);
-  }
-  return (
-    <div className="App">
-      <header className="page-header">
-        <a href="/studentdashboard.html" className="brand-logo">
-          <svg className="header-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#FFD700" d="M50,2 A48,48 0 1,0 50,98 A48,48 0 1,0 50,2 Z" />
-            <g fill="#0A0A0A">
-              <path d="M28,25 h10 v50 h-10 Z" />
-              <path d="M45,25 H60 A12.5,12.5 0 0,1 60,50 H45 Z M45,50 H63 A12.5,12.5 0 0,1 63,75 H45 Z" />
-            </g>
-          </svg>
-          <h1 className="brand-title">IB STUDIOZ</h1>
-        </a>
-        <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
-          <div className="theme-toggle" id="theme-toggle">
-            <FontAwesomeIcon icon={["fas", "moon"]} />
-            <span>Dark</span>
-          </div>
-          <button id="profile-btn" className="btn-secondary">
-            <FontAwesomeIcon icon={["fas", "user"]} /> Profile
-          </button>
-          <button id="logout-btn" className="btn-secondary">
-            <FontAwesomeIcon icon={["fas", "sign-out-alt"]} /> Logout
-          </button>
-        </div>
-      </header>
-      <div className="container">
-        <nav className="feature-tabs">
-          {[
-            { key: "dashboard", label: "Dashboard" },
-            { key: "planner", label: "Planner" },
-            { key: "tasks", label: "Tasks" },
-            { key: "analytics", label: "Analytics" },
-            { key: "goals", label: "Goals" },
-            { key: "social", label: "Social" },
-            { key: "quiz", label: "Quiz Maker" },
-            { key: "mindmap", label: "Mind Map" },
-            { key: "notes", label: "Notes" },
-            { key: "rooms", label: "Study Rooms" },
-            { key: "badges", label: "Badges" },
-            { key: "resume", label: "Resume" },
-            { key: "ai", label: "AI Assistant" }
-          ].map(tab => (
-            <button
-              key={tab.key}
-              className={"feature-tab" + (activePanel === tab.key ? " active" : "")}
-              onClick={() => setActivePanel(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </nav>
-        {activePanel === "dashboard" && (
-          <DashboardOverview
-            materialsCount={materialsCount}
-            pyqsCount={pyqsCount}
-            seminarsCount={seminarsCount}
-            creditsCount={creditsCount}
-            streakCount={streakCount}
-            hoursCount={hoursCount}
-          />
-        )}
-        {activePanel === "planner" && <Planner showToast={showToast} />}
-        {activePanel === "tasks" && <TaskManager showToast={showToast} />}
-        {activePanel === "analytics" && <Analytics />}
-        {activePanel === "goals" && <Goals showToast={showToast} />}
-        {activePanel === "social" && <SocialLearning />}
-        {activePanel === "quiz" && <QuizMaker showToast={showToast} />}
-        {activePanel === "mindmap" && <MindMap showToast={showToast} />}
-        {activePanel === "notes" && <CollaborativeNotes showToast={showToast} />}
-        {activePanel === "rooms" && <StudyRooms showToast={showToast} />}
-        {activePanel === "badges" && <Badges />}
-        {activePanel === "resume" && <ResumeBuilder showToast={showToast} />}
-        {activePanel === "ai" && <AIAssistant showToast={showToast} />}
-        <Toast {...toast} />
-      </div>
-    </div>
-  );
-}
-
-
-
 
 function App() {
   return (
-    <ErrorBoundary>
-      <DashboardProvider>
-        <Router>
-          <AppWithContext />
-        </Router>
-      </DashboardProvider>
-    </ErrorBoundary>
+    <div className="app-layout">
+      <Sidebar />
+      <main className="main-content">
+        {/* Your Router Outlet would go here */}
+        <StudentDashboard />
+      </main>
+    </div>
   );
-}
-
-
-function AppWithContext() {
-  let user, ctx;
-  try {
-    ctx = useDashboardContext();
-    user = ctx.user;
-  } catch (e) {
-    console.error('DashboardContext error:', e);
-    return (
-      <div style={{color:'#FFD700',background:'#181818',padding:'2rem',textAlign:'center'}}>
-        <h1>Dashboard Context Error</h1>
-        <pre style={{color:'#fff'}}>{e.toString()}</pre>
-        <p>This means the context provider is missing or broken. Please check your deployment.</p>
-      </div>
-    );
-  }
-
-  // Role-based routing logic
-  function RoleRouter() {
-    const [role, setRole] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      ctx.db.collection("users").doc(user.uid).get().then(doc => {
-        const data = doc.data();
-        setRole(data?.role || "student");
-        setLoading(false);
-      }).catch(() => {
-        setRole("student");
-        setLoading(false);
-      });
-    }, [user]);
-
-    if (loading) return <div style={{color:'#FFD700',background:'#181818',padding:'2rem',textAlign:'center'}}>Loading...</div>;
-
-    return (
-      <Routes>
-        <Route path="/" element={role === "admin" ? <Navigate to="/admin" /> : <Navigate to="/student" />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/student" element={<StudentDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    );
-  }
-
-  if (!user) {
-    return (
-      <Routes>
-        <Route path="/*" element={<LoginPage />} />
-      </Routes>
-    );
-  }
-
-  return <RoleRouter />;
 }
 
 export default App;
